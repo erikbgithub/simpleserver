@@ -4,8 +4,14 @@ Description=A simple rebootable test server for podman
 [Service]
 Restart=on-failure
 RestartSec=30
-ExecStartPre=/usr/bin/rm -f %t/%n-pid %t/%n-cid
-ExecStart=/usr/bin/podman run --conmon-pidfile %t/%n-pid --cidfile %t/%n-cid -d simpleserver:latest
+# make possible leftovers from a previous run go away
+ExecStartPre=-/usr/bin/rm -f %t/%n-pid %t/%n-cid
+# really, go away.
+ExecStartPre=-/usr/bin/podman stop simpleserver
+# I said: Go. Away.
+ExecStartPre=-/usr/bin/podman rm simpleserver
+# Thanks
+ExecStart=/usr/bin/podman run --conmon-pidfile %t/%n-pid --cidfile %t/%n-cid --name simpleserver -d simpleserver:latest
 ExecStop=/usr/bin/sh -c "/usr/bin/podman rm -f `cat %t/%n-cid`"
 KillMode=none
 Type=forking
