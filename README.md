@@ -7,6 +7,10 @@ The idea for this repository came to me from reading
 [this excellent blog post](https://www.redhat.com/sysadmin/podman-shareable-systemd-services)
 from my colleague [Valentin Rothberg](https://github.com/vrothberg).
 
+The idea about healthchecks came from
+[this (slightly outdated) blog post](https://developers.redhat.com/blog/2019/04/18/monitoring-container-vitality-and-availability-with-podman/)
+by my colleague [Brent Baude](https://github.com/baude).
+
 ## Howto
 
 Ensure that you run this with a user that can control systemctl, then just
