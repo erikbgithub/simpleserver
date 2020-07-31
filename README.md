@@ -27,3 +27,7 @@ And then you can control it with:
     $ systemctl enable simpleserver
     $ systemctl start simpleserver
     $ systemctl stop simpleserver
+
+## Testing
+
+You can see the start page at `localhost:8080` and the metrics at `localhost:8080/server-status`.
