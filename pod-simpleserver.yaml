@@ -1,0 +1,88 @@
+# Generation of Kubernetes YAML is still under development!
+#
+# Save the output of this file and use kubectl create -f to import
+# it into Kubernetes.
+#
+# Created with podman-2.1.0-dev
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: "2020-08-05T15:49:08Z"
+  labels:
+    app: simpleserver
+  name: simpleserver
+spec:
+  containers:
+  - command:
+    - --scrape_uri=http://localhost:8080/server-status/?auto
+    env:
+    - name: PATH
+      value: /opt/bitnami/apache-exporter/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    - name: TERM
+      value: xterm
+    - name: HOSTNAME
+      value: simpleserver
+    - name: container
+      value: podman
+    - name: HOME
+      value: /
+    - name: OS_ARCH
+      value: amd64
+    - name: OS_FLAVOUR
+      value: debian-10
+    - name: OS_NAME
+      value: linux
+    - name: BITNAMI_APP_NAME
+      value: apache-exporter
+    - name: BITNAMI_IMAGE_VERSION
+      value: 0.8.0-debian-10-r114
+    image: docker.io/bitnami/apache-exporter:latest
+    name: apache-sidecar
+    ports:
+    - containerPort: 80
+      hostPort: 8080
+      protocol: TCP
+    - containerPort: 9117
+      hostPort: 9117
+      protocol: TCP
+    resources: {}
+    securityContext:
+      allowPrivilegeEscalation: true
+      capabilities: {}
+      privileged: false
+      readOnlyRootFilesystem: false
+      runAsGroup: 0
+      runAsUser: 1001
+      seLinuxOptions: {}
+    workingDir: /opt/bitnami/apache-exporter
+  - command:
+    - /usr/sbin/httpd
+    - -D
+    - FOREGROUND
+    env:
+    - name: PATH
+      value: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    - name: TERM
+      value: xterm
+    - name: HOSTNAME
+      value: simpleserver
+    - name: container
+      value: podman
+    image: localhost/simpleserver:latest
+    imagePullPolicy: Never
+    name: simpleserver
+    resources: {}
+    securityContext:
+      allowPrivilegeEscalation: true
+      capabilities: {}
+      privileged: false
+      readOnlyRootFilesystem: false
+      seLinuxOptions: {}
+    workingDir: /
+status: {}
+---
+metadata:
+  creationTimestamp: null
+spec: {}
+status:
+  loadBalancer: {}
