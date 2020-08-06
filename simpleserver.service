@@ -4,14 +4,15 @@ Description=A simple rebootable test server for podman
 [Service]
 Restart=on-failure
 RestartSec=30
-# make possible leftovers from a previous run go away
 ExecStartPre=-/usr/bin/rm -f %t/%n-pid %t/%n-cid
-# really, go away.
 ExecStartPre=-/usr/bin/podman stop simpleserver
-# I said: Go. Away.
+ExecStartPre=-/usr/bin/podman stop apache-sidecar
 ExecStartPre=-/usr/bin/podman rm simpleserver
-# Thanks
-ExecStart=/usr/bin/podman run --health-cmd 'curl http://localhost || exit 1' --health-interval=30s --conmon-pidfile %t/%n-pid --cidfile %t/%n-cid --name simpleserver -p 8080:80 -detach simpleserver:latest
+ExecStartPre=-/usr/bin/podman rm apache-sidecar
+ExecStartPre=-podman pod rm simpleserver_pod
+#TODO: enable a podman kube play scenario
+# pre-pod exec start for reference ExecStart=/usr/bin/podman run --health-cmd 'curl http://localhost || exit 1' --health-interval=30s --conmon-pidfile %t/%n-pid --cidfile %t/%n-cid --name simpleserver -p 8080:80 -detach simpleserver:latest
+ExecStart=start-simpleserver.sh %t %n
 ExecStop=/usr/bin/sh -c "/usr/bin/podman rm -f `cat %t/%n-cid`"
 KillMode=none
 Type=forking
